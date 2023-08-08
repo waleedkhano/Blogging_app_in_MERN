@@ -1,0 +1,8 @@
+
+*/backend/node_modules
+*/node_modules
+
+
+.env.local
+.env
+*/backend/config/.env
