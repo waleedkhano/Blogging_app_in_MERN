@@ -7,6 +7,7 @@ const initialState = {
   message: null,
   blogs: null,
   blog: null,
+  myBlogs: null,
 };
 
 export const userReducer = createReducer(initialState, (builder) => {
@@ -81,6 +82,28 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.blog = action.payload;
     })
     .addCase("getSingleBlogFail", (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase("myBlogRequest", (state) => {
+      state.loading = true;
+    })
+    .addCase("myBlogSuccess", (state, action) => {
+      state.loading = false;
+      state.myBlogs = action.payload;
+    })
+    .addCase("myBlogFail", (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase("deleteBlogRequest", (state) => {
+      state.loading = true;
+    })
+    .addCase("deleteBlogSuccess", (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase("deleteBlogFail", (state, action) => {
       state.loading = false;
       state.error = action.payload;
     })

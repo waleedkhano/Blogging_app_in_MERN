@@ -5,7 +5,7 @@ const router = require('./routes/routes')
 const mongoose = require('mongoose')
 const cloudinary = require("cloudinary").v2;
 const { config } = require('dotenv');
-const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const ErrorMiddleware = require("./middleware/Error")
 
 config({
@@ -17,7 +17,7 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API,
     api_secret: process.env.CLOUDINARY_SECRET    
 })
-
+app.use(cookieParser());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({

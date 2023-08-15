@@ -12,20 +12,12 @@ const SingleBlog = () => {
     dispatch(singleblogs(blogId));
   }, [dispatch, blogId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <div>
       {blog && (
         <div className="singleBlog">
           <div className="singleBlogImg">
-            <img src={blog.logo} alt="Blog-cover-img" />
+            <img src={blog.logo.url} alt="Blog-cover-img" />
           </div>
           <h1>{blog.title}</h1>
           <p>{blog.content}</p>

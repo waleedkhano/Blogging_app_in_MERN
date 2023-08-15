@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cloudinary = require('cloudinary');
 const catchAsyncError = require("../middleware/catchAsyncError");
 const getDataUri = require('../utils/dataUri');
+const jwt = require("jsonwebtoken");
 
 const allBlogs =catchAsyncError( async (req, res) => {
     const blogs = await BlogsModel.find({}).sort({ createdAt: -1 });
@@ -36,19 +37,47 @@ const postNewBlog = catchAsyncError( async (req, res, next) => {
       
       const fileUri = getDataUri(file)
       
-      const LogoUrl = await cloudinary.v2.uploader.upload(fileUri.content);
-      const logoUrl = LogoUrl.secure_url;
+      const mycloud = await cloudinary.v2.uploader.upload(fileUri.content);
+      // const logoUrl = LogoUrl.secure_url;
 
-      const authorId = req.user._id;
+
+      //Getting the user id through decoding the cookie token
+      const token = req.cookies.token;
+      if (!token) {
+              return res.status(401).json({ message: 'No token provided' });
+            }
       
-      await BlogsModel.create({ title, content, logo:logoUrl, authorId });
-      console.log(authorId)
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decodedToken._id
+
+      await BlogsModel.create({ 
+        title, 
+        content, 
+        logo:{
+          public_id: mycloud.public_id,
+          url :mycloud.secure_url,
+        },
+        authorId:userId 
+      });
+
       res.status(201).json({
         success: true,
         message: "Blog has been posted Successfully.",
       });    
   });
   
+  // myblogs
+const myBlogs = catchAsyncError( async ( req, res, next) => {
+  const token = req.cookies.token;
+  if(!token){
+    return res.status(401).json({message: "No token available"});
+  }
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const authorId = decodedToken._id;
+  const myblogs = await BlogsModel.find({ authorId }).sort({ createdAt: -1 });
+  res.status(200).json(myblogs);
+});
+
 // Delete a blog
 const deleteBlog = catchAsyncError( async (req, res, next) => {
   const id = req.params.id;
@@ -57,14 +86,20 @@ const deleteBlog = catchAsyncError( async (req, res, next) => {
       return res.status(404).json({ error: "The ID is invalid" });
     }
 
-    const deletedBlog = await BlogsModel.findOneAndDelete({ _id: id });
+    const deleteBlog = await BlogsModel.findById(id);
+    if (!deleteBlog) return next(new ErrorHandler("Blog not found", 404));
 
-    if (!deletedBlog) {
-      return res.status(404).json({ error: "No such blog found" });
-    }
+    await cloudinary.v2.uploader.destroy(deleteBlog.logo.public_id);
 
-    res.status(200).json(deletedBlog);
+    await BlogsModel.deleteOne({ _id: id });
+
+    res.status(200).json({
+      success: true,
+      message: "Blog Deleted Successfully",
+    });
+
 });
+
 
 
 module.exports = {
@@ -72,4 +107,5 @@ module.exports = {
   singleBlog,
   postNewBlog,
   deleteBlog,
+  myBlogs
 };

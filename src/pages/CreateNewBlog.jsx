@@ -22,7 +22,7 @@ const CreateNewBlog = () => {
     myForm.append("content", content);
     myForm.append("file", logo);
 
-   const success = await dispatch(postNewBlog(myForm));
+    const success = await dispatch(postNewBlog(myForm));
     if (success) {
       setData({
         title: '',
@@ -30,9 +30,7 @@ const CreateNewBlog = () => {
         logo: '',
       });
     }
-    
-    
-   
+
   };
 
 
@@ -63,7 +61,7 @@ const CreateNewBlog = () => {
               type='file'
               accept='image/*'
               name='logo'
-              onChange={(e) => setData({...data, logo: e.target.files[0]})}
+              onChange={(e) => setData({ ...data, logo: e.target.files[0] })}
             />
             <img className='avator' src={icon} alt='avator' width='30px' />
             <span>Add an image</span>

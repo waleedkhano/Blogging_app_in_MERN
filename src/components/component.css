@@ -38,7 +38,13 @@
 .blogData{
     margin: 30px;
     width: 20%;
+    transition: all 0.5s;
 }
+
+.blogData:hover{
+    transform: translateY(-10px);
+}
+
 .blogData img{
     width: 350px;
     height: 250px;
@@ -49,7 +55,11 @@
 .blogData h4{
     margin: 10px;
     font-size: 1.4rem;
+    max-height: 30px;
+    overflow: hidden;
 }
+
+
 .blogData p{
     position: relative;
     max-height: 50px;
@@ -69,4 +79,19 @@
     text-align: center;
     text-decoration: none;
     color: black;
+}
+
+/* MyBlogs page  */
+
+.myblogsContainer{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+
+.myblogsContainer button{
+    width: 100%;
+    margin-top: 10px;
 }

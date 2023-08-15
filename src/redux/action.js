@@ -89,6 +89,34 @@ export const logout = () => async (dispatch) => {
   };
 
 
+  //get my the blogs
+  export const myblogs = () => async (dispatch) => {
+    try {
+      dispatch({ type: "myBlogRequest" }); 
+      const { data } = await axios.get("/myblogs", {
+        withCredentials: true,
+      });      
+      dispatch({ type: "myBlogSuccess", payload: data }); 
+    } catch (error) {
+      dispatch({ type: "myBlogFail", payload: error.response.data.message }); 
+    }
+  };
+
+
+  //delete my the blogs
+  export const deleteBlog = id => async (dispatch) => {
+    try {
+      dispatch({ type: "deleteBlogRequest" }); 
+      const { data } = await axios.delete(`/myblog/${id}`, {
+        withCredentials: true,
+      });      
+      dispatch({ type: "deleteBlogSuccess", payload: data.message }); 
+    } catch (error) {
+      dispatch({ type: "deleteBlogFail", payload: error.response.data.message }); 
+    }
+  };
+
+
   //get single the blogs
   export const singleblogs = (id) => async (dispatch) => {
     console.log(id)

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import BooksCard from '../components/BooksCard';
 import Footer from '../footer/Footer';
 
@@ -12,7 +13,7 @@ const Home = () => {
                 <div className='coverText'>
                     <h1>I'll Give You The Truth About Blogging</h1>
                     <p>We were guests at this all inclusive private island resort, they invited us to stay and give them some extra publicity. Take a look, but this is rare for us..</p>
-                    <button>Explore Blogs</button>
+                    <Link to='/blogs'><button>Explore Blogs</button></Link>
                 </div>
             </div>
             <div className='feature'>

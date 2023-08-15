@@ -14,6 +14,7 @@ import { Toaster, toast } from "react-hot-toast";
 import SingleBlog from "./pages/SingleBlog";
 import { useDispatch, useSelector } from "react-redux";
 import { ProtectedRoute } from "protected-route-react";
+import MyBlogs from "./pages/MyBlogs";
 
 
 const App = () => {
@@ -58,8 +59,14 @@ const App = () => {
           <ProtectedRoute isAuthenticated={isAuthenticated} redirect="/signin">
             <CreateNewBlog />
           </ProtectedRoute>
-
         } />
+
+        <Route path="/myblogs" element={
+          <ProtectedRoute isAuthenticated={isAuthenticated} redirect="/signin">
+            <MyBlogs />
+          </ProtectedRoute>
+        } />
+
         <Route path="/blogs/:blogId" element={<SingleBlog />} />
       </Routes>
     </Router>

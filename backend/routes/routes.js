@@ -11,11 +11,9 @@ router.post('/user/logout', user.logOut);
 
 // Routes for blogs
 router.get('/blogs/', blogs.allBlogs);
+router.get('/myblogs/', blogs.myBlogs);
 router.get('/blogs/:id', blogs.singleBlog);
-
-// Protected route: This will allow only logged-in users to post a new blog
 router.post('/blogs/', singleUpload, blogs.postNewBlog);
-
-router.delete('/blogs/:id', blogs.deleteBlog);
+router.delete('/myblog/:id', blogs.deleteBlog);
 
 module.exports = router;

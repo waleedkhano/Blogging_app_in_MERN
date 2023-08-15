@@ -11,12 +11,18 @@ const blogsSchema = new mongoose.Schema(
       required: true,
     },
     logo: {
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
+    },
+    authorId: {
       type: String,
       required: true,
-    },
-    authorId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'UserModel'
     }
   },
   { timestamps: true }
